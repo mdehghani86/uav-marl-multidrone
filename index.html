@@ -168,8 +168,11 @@
   /* ─── Figure cards ─── */
   .fig-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(560px, 1fr));
     gap: 18px;
+  }
+  @media (max-width: 720px) {
+    .fig-grid { grid-template-columns: 1fr; }
   }
   .fig-card {
     border: 1px solid var(--line);
@@ -183,11 +186,13 @@
     transform: translateY(-2px);
   }
   .fig-card iframe {
-    width: 100%; height: 360px;
+    width: 100%; height: 540px;
     border: 0;
     border-bottom: 1px solid var(--line);
     display: block;
+    background: #FAFAFA;
   }
+  .fig-card iframe.tall { height: 620px; }
   .fig-card-meta {
     padding: 14px 16px;
   }
@@ -407,7 +412,7 @@
     </div>
 
     <div class="fig-card">
-      <iframe src="figures/fig5_env_diagram.html" loading="lazy" title="Environment diagram"></iframe>
+      <iframe class="tall" src="figures/fig5_env_diagram.html" loading="lazy" title="Environment diagram"></iframe>
       <div class="fig-card-meta">
         <div class="num">FIGURE 5</div>
         <div class="title">Environment diagram</div>
@@ -417,7 +422,7 @@
     </div>
 
     <div class="fig-card">
-      <iframe src="figures/fig6_scenario_heatmap.html" loading="lazy" title="Scenario heatmap"></iframe>
+      <iframe class="tall" src="figures/fig6_scenario_heatmap.html" loading="lazy" title="Scenario heatmap"></iframe>
       <div class="fig-card-meta">
         <div class="num">FIGURE 6</div>
         <div class="title">Scenario heatmap</div>
