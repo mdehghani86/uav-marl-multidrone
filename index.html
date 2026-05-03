@@ -251,6 +251,48 @@
   }
   footer a { color: var(--accent-2); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
+
+  /* ─── Mobile / small-viewport polish ─── */
+  @media (max-width: 720px) {
+    .topbar { padding: 8px 14px; gap: 6px; }
+    .topbar a.btn-link { padding: 5px 8px; font-size: 12px; }
+    .topbar a.btn-link.nav { display: none; }
+    .brand { font-size: 13px; }
+    .hero { padding: 32px 18px 26px; }
+    h1 { font-size: 26px; line-height: 1.2; margin-bottom: 14px; }
+    .subtitle { font-size: 15px; margin-bottom: 22px; }
+    .author-row { font-size: 13px; flex-wrap: wrap; gap: 6px; margin-bottom: 22px; }
+    .hero-stats { gap: 10px; margin-bottom: 20px; }
+    .stat-card { padding: 14px 12px; }
+    .stat-card .v { font-size: 18px; }
+    .stat-card .l { font-size: 11px; }
+    .cta { gap: 8px; }
+    .btn { padding: 9px 14px; font-size: 13px; }
+    section.block { padding: 26px 18px; }
+    h2 { font-size: 20px; }
+    .section-lede { font-size: 14px; margin-bottom: 18px; }
+    .findings { gap: 10px; }
+    .finding { padding: 14px 14px; }
+    .finding p { font-size: 13px; }
+    .fig-grid { gap: 14px; grid-template-columns: 1fr; }
+    .fig-card iframe { height: 360px; }
+    .fig-card iframe.tall { height: 440px; }
+    .fig-card-meta { padding: 12px 14px; }
+    .fig-card-meta .title { font-size: 13px; }
+    .fig-card-meta .cap { font-size: 12px; }
+    table { font-size: 12px; }
+    th, td { padding: 7px 8px; }
+    .citation { font-size: 11px; padding: 14px 14px; line-height: 1.5; }
+    footer { padding: 28px 18px 40px; font-size: 12px; }
+  }
+  @media (max-width: 480px) {
+    h1 { font-size: 22px; }
+    .subtitle { font-size: 14px; }
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+    .fig-card iframe { height: 320px; }
+    .fig-card iframe.tall { height: 380px; }
+    .btn { padding: 8px 12px; font-size: 12.5px; }
+  }
 </style>
 </head>
 <body>
@@ -258,9 +300,9 @@
 <div class="topbar">
   <a href="#" class="brand"><span class="brand-dot"></span>UAV-MARL</a>
   <div class="topbar-spacer"></div>
-  <a class="btn-link" href="#findings">Findings</a>
-  <a class="btn-link" href="#figures">Figures</a>
-  <a class="btn-link" href="#table">Comparison</a>
+  <a class="btn-link nav" href="#findings">Findings</a>
+  <a class="btn-link nav" href="#figures">Figures</a>
+  <a class="btn-link nav" href="#table">Comparison</a>
   <a class="btn-link" href="paper.pdf" target="_blank" rel="noopener" title="View PDF">
     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
