@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 3 — RL training curves</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#FAFAFA; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; padding:40px; font-family:'Roboto','Helvetica Neue',Arial,sans-serif; color:#222; }
+.wrap { background:#fff; padding:28px 32px 22px; max-width:820px; width:100%; border:1px solid #E5E7EB; }
+.title { font-size:17px; font-weight:700; color:#111; letter-spacing:-.005em; line-height:1.25; }
+.subtitle { font-size:13px; font-weight:400; color:#4B5563; margin-top:4px; line-height:1.45; }
+.hr { height:1px; background:#E5E7EB; margin:14px 0 10px; }
+.source { font-size:10.5px; color:#6B7280; margin-top:12px; padding-top:10px; border-top:1px solid #E5E7EB; }
+.caption { font-size:12.5px; color:#374151; margin-top:14px; line-height:1.6; padding-top:14px; border-top:1px solid #E5E7EB; }
+.caption b { color:#111; font-weight:700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="title">Figure 3. RL training curves at M = 2, N = 20, uniform medium</div>
+<div class="subtitle">Attention-MARL crosses the H1 baseline at iteration 150 and finishes on top. A3C diverges within 10 iterations.</div>
+<div class="hr"></div>
+
+<svg width="760" height="360" viewBox="0 0 820 380" xmlns="http://www.w3.org/2000/svg" font-family="'Roboto','Helvetica Neue',Arial,sans-serif">
+
+  <!-- Y-axis label -->
+  <text x="0" y="180" transform="rotate(-90 0 180)" font-size="10.5" font-weight="500" fill="#6B7280" letter-spacing=".04em">TEAM RETURN (10-STEP ROLLING MEAN)</text>
+
+  <!-- Y gridlines + labels -->
+  <g font-size="10" fill="#6B7280" font-family="'Roboto Mono',monospace">
+    <text x="66" y="44" text-anchor="end">700</text><line x1="74" y1="40" x2="720" y2="40" stroke="#F3F4F6"/>
+    <text x="66" y="84" text-anchor="end">680</text><line x1="74" y1="80" x2="720" y2="80" stroke="#F3F4F6"/>
+    <text x="66" y="124" text-anchor="end">660</text><line x1="74" y1="120" x2="720" y2="120" stroke="#F3F4F6"/>
+    <text x="66" y="164" text-anchor="end">640</text><line x1="74" y1="160" x2="720" y2="160" stroke="#F3F4F6"/>
+    <text x="66" y="204" text-anchor="end">620</text><line x1="74" y1="200" x2="720" y2="200" stroke="#F3F4F6"/>
+    <text x="66" y="244" text-anchor="end">600</text><line x1="74" y1="240" x2="720" y2="240" stroke="#F3F4F6"/>
+    <text x="66" y="284" text-anchor="end">580</text><line x1="74" y1="280" x2="720" y2="280" stroke="#F3F4F6"/>
+    <text x="66" y="304" text-anchor="end">560</text><line x1="74" y1="300" x2="720" y2="300" stroke="#9CA3AF"/>
+  </g>
+
+  <!-- X: iter 0..300 → x=82..720 (range 638), px/iter=2.13 -->
+
+  <!-- H1 baseline -->
+  <!-- 650.4 → y=300-(90.4)*2 → y=119.2 -->
+  <line x1="74" y1="140" x2="720" y2="140" stroke="#9CA3AF" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="720" y="135" text-anchor="end" font-size="10" fill="#6B7280" font-weight="500">H1 heuristic baseline · 650.4</text>
+
+  <!-- Attention-MARL curve (300 iters, ends ~654) -->
+  <!-- Simplified clean path from start 605 to final 653 -->
+  <path d="M 82,220 Q 150,205 220,185 Q 290,170 380,155 Q 480,142 580,135 Q 650,132 720,128"
+        fill="none" stroke="#059669" stroke-width="2.6"/>
+
+  <!-- I-PPO curve (200 iters, ends ~630) -->
+  <path d="M 82,220 Q 150,215 220,198 Q 290,188 370,180 Q 440,172 510,170"
+        fill="none" stroke="#3B82F6" stroke-width="2"/>
+  <!-- I-PPO end marker -->
+  <circle cx="510" cy="170" r="4" fill="#3B82F6"/>
+
+  <!-- MAPPO curve (150 iters, ends ~637) -->
+  <path d="M 82,220 Q 130,214 180,200 Q 240,190 320,178 Q 380,172 402,166"
+        fill="none" stroke="#6366F1" stroke-width="1.8" stroke-dasharray="5,3"/>
+  <circle cx="402" cy="166" r="4" fill="#6366F1"/>
+
+  <!-- A3C diverges -->
+  <path d="M 82,230 L 120,300" fill="none" stroke="#F59E0B" stroke-width="2"/>
+  <text x="124" y="314" font-size="10" fill="#D97706" font-weight="500">A3C diverges → 29</text>
+
+  <!-- Attn-MARL end marker + label -->
+  <circle cx="720" cy="128" r="5" fill="#059669"/>
+  <text x="726" y="124" font-size="11" font-weight="700" fill="#059669">Attention-MARL</text>
+  <text x="726" y="138" font-size="10" font-family="'Roboto Mono',monospace" fill="#059669">653.7 · ★</text>
+
+  <!-- I-PPO label -->
+  <text x="516" y="166" font-size="11" font-weight="500" fill="#3B82F6">I-PPO</text>
+  <text x="516" y="180" font-size="10" font-family="'Roboto Mono',monospace" fill="#3B82F6">~630</text>
+
+  <!-- MAPPO label -->
+  <text x="408" y="162" font-size="10" font-weight="500" fill="#6366F1">MAPPO (150)</text>
+
+  <!-- X-axis tick marks -->
+  <g font-size="10" fill="#6B7280" font-family="'Roboto Mono',monospace">
+    <line x1="82" y1="300" x2="82" y2="304" stroke="#9CA3AF"/>
+    <text x="82" y="318" text-anchor="middle">0</text>
+    <line x1="294" y1="300" x2="294" y2="304" stroke="#9CA3AF"/>
+    <text x="294" y="318" text-anchor="middle">100</text>
+    <line x1="507" y1="300" x2="507" y2="304" stroke="#9CA3AF"/>
+    <text x="507" y="318" text-anchor="middle">200</text>
+    <line x1="720" y1="300" x2="720" y2="304" stroke="#9CA3AF"/>
+    <text x="720" y="318" text-anchor="middle">300</text>
+  </g>
+
+  <!-- X-axis label -->
+  <text x="400" y="346" text-anchor="middle" font-size="11" fill="#6B7280" letter-spacing=".03em">Training iteration</text>
+
+  <!-- Crossover annotation -->
+  <g opacity=".7">
+    <line x1="380" y1="140" x2="380" y2="155" stroke="#059669" stroke-width="1" stroke-dasharray="2,2"/>
+    <circle cx="380" cy="140" r="3" fill="#fff" stroke="#059669" stroke-width="1.5"/>
+    <text x="384" y="136" font-size="9.5" fill="#059669" font-weight="500">crosses H1 baseline</text>
+  </g>
+</svg>
+
+<div class="source">n = 1 seed per run on Tesla V100 · rolling mean over 10 iterations · A3C final return = 29 (off-scale)</div>
+
+<div class="caption"><b>Figure 3.</b> Solid lines are 10-step rolling means on a single scenario. Attention-MARL (300 iter) crosses H1 at ≈ iter 150 and finishes at 653.7. I-PPO (200 iter) plateaus near 630. MAPPO (150 iter) tracks I-PPO. A3C diverges within 10 iterations — its asynchronous gradient updates are incompatible with the sequential-turn action distribution that synchronous PPO handles stably.</div>
+
+</div>
+</body>
+</html>

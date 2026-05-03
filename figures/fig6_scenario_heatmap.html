@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 6 — Which method wins each scenario</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#FAFAFA;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-height:100vh; padding:40px;
+  font-family:'Roboto','Helvetica Neue',Arial,sans-serif;
+  color:#222;
+}
+.wrap {
+  background:#fff;
+  padding:28px 32px 22px;
+  max-width:820px;
+  width:100%;
+  border:1px solid #E5E7EB;
+}
+.title {
+  font-size:17px; font-weight:700; color:#111;
+  letter-spacing:-.005em; line-height:1.25;
+}
+.subtitle {
+  font-size:13px; font-weight:400; color:#4B5563;
+  margin-top:4px; line-height:1.45;
+}
+.hr { height:1px; background:#E5E7EB; margin:14px 0 10px; }
+.source {
+  font-size:10.5px; color:#6B7280;
+  margin-top:12px; padding-top:10px;
+  border-top:1px solid #E5E7EB;
+  letter-spacing:.01em;
+}
+.caption {
+  font-size:12.5px; color:#374151;
+  margin-top:14px; line-height:1.6;
+  padding-top:14px;
+  border-top:1px solid #E5E7EB;
+}
+.caption b { color:#111; font-weight:700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="title">Figure 6. Which method wins each scenario</div>
+<div class="subtitle">Each method's wins across the 36-scenario grid. Grey cells = method lost that scenario. Coloured cells = method won.</div>
+<div class="hr"></div>
+
+<svg width="760" height="360" viewBox="0 0 820 390" xmlns="http://www.w3.org/2000/svg" font-family="'Roboto','Helvetica Neue',Arial,sans-serif">
+
+  <!-- ═══════════ Column group headers (M = 2, 3, 5) ═══════════ -->
+  <g font-size="10.5" font-weight="700" fill="#111" letter-spacing=".04em">
+    <text x="348" y="14" text-anchor="middle">M = 2</text>
+    <text x="554" y="14" text-anchor="middle">M = 3</text>
+    <text x="760" y="14" text-anchor="middle">M = 5</text>
+  </g>
+  <!-- Group divider ticks -->
+  <g stroke="#9CA3AF" stroke-width="0.8">
+    <line x1="252" y1="20" x2="252" y2="26"/>
+    <line x1="446" y1="20" x2="446" y2="26"/>
+    <line x1="458" y1="20" x2="458" y2="26"/>
+    <line x1="650" y1="20" x2="650" y2="26"/>
+    <line x1="662" y1="20" x2="662" y2="26"/>
+    <line x1="856" y1="20" x2="856" y2="26" transform="translate(0,0)"/>
+  </g>
+  <g stroke="#D1D5DB" stroke-width="0.8">
+    <line x1="252" y1="22" x2="446" y2="22"/>
+    <line x1="458" y1="22" x2="650" y2="22"/>
+    <line x1="662" y1="22" x2="856" y2="22"/>
+  </g>
+
+  <!-- N sub-labels -->
+  <g font-size="9.5" font-weight="500" fill="#4B5563">
+    <text x="284" y="38" text-anchor="middle">N=20</text>
+    <text x="348" y="38" text-anchor="middle">N=30</text>
+    <text x="412" y="38" text-anchor="middle">N=50</text>
+    <text x="490" y="38" text-anchor="middle">N=20</text>
+    <text x="554" y="38" text-anchor="middle">N=30</text>
+    <text x="618" y="38" text-anchor="middle">N=50</text>
+    <text x="696" y="38" text-anchor="middle">N=20</text>
+    <text x="760" y="38" text-anchor="middle">N=30</text>
+    <text x="824" y="38" text-anchor="middle">N=50</text>
+  </g>
+
+  <!-- Separator line beneath sub-labels -->
+  <line x1="0" y1="46" x2="820" y2="46" stroke="#E5E7EB" stroke-width="1"/>
+
+  <!-- ═══════════ Left-column headers ═══════════ -->
+  <g font-size="10" font-weight="500" fill="#6B7280" letter-spacing=".02em">
+    <text x="12" y="38">Method</text>
+    <text x="176" y="38">Wins</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════
+       ROW 1 — H4 greedy EDF (18 wins)
+       ═══════════════════════════════════════ -->
+  <g transform="translate(0, 56)">
+    <!-- Label column -->
+    <text x="12" y="22" font-size="13.5" font-weight="700" fill="#111">H4 greedy EDF</text>
+    <text x="12" y="38" font-size="10.5" fill="#6B7280">earliest-deadline-first</text>
+
+    <!-- Win count + mini-bar -->
+    <text x="176" y="22" font-size="18" font-weight="700" fill="#111" font-family="'Roboto Mono',monospace">18</text>
+    <text x="208" y="22" font-size="11" font-weight="500" fill="#6B7280">/ 36</text>
+    <text x="176" y="38" font-size="10" fill="#6B7280">50% · dominates small N</text>
+
+    <!-- Fingerprint cells (12 per M group, arranged as 4 per N sub-group) -->
+    <!-- Each cell: 14 wide, 28 tall, gap 1 horizontally between cells, gap 4 between N groups, gap 12 between M groups -->
+    <!-- M=2 starts at x=252 -->
+    <g>
+      <!-- M=2, N=20: 4 cells (unif-med, unif-tight, clust-med, clust-tight) -->
+      <rect x="252" y="0" width="14" height="28" fill="#F59E0B"/>
+      <rect x="267" y="0" width="14" height="28" fill="#F59E0B"/>
+      <rect x="282" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="297" y="0" width="14" height="28" fill="#F59E0B"/>
+      <!-- M=2, N=30 -->
+      <rect x="316" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="331" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="346" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="361" y="0" width="14" height="28" fill="#F59E0B"/>
+      <!-- M=2, N=50 -->
+      <rect x="380" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="395" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="410" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="425" y="0" width="14" height="28" fill="#F3F4F6"/>
+    </g>
+    <g>
+      <!-- M=3, N=20 -->
+      <rect x="458" y="0" width="14" height="28" fill="#F59E0B"/>
+      <rect x="473" y="0" width="14" height="28" fill="#F59E0B"/>
+      <rect x="488" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="503" y="0" width="14" height="28" fill="#F59E0B"/>
+      <!-- M=3, N=30 -->
+      <rect x="522" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="537" y="0" width="14" height="28" fill="#F59E0B"/>
+      <rect x="552" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="567" y="0" width="14" height="28" fill="#F59E0B"/>
+      <!-- M=3, N=50 -->
+      <rect x="586" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="601" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="616" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="631" y="0" width="14" height="28" fill="#F3F4F6"/>
+    </g>
+    <g>
+      <!-- M=5, N=20 -->
+      <rect x="664" y="0" width="14" height="28" fill="#F59E0B"/>
+      <rect x="679" y="0" width="14" height="28" fill="#F59E0B"/>
+      <rect x="694" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="709" y="0" width="14" height="28" fill="#F59E0B"/>
+      <!-- M=5, N=30 -->
+      <rect x="728" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="743" y="0" width="14" height="28" fill="#F59E0B"/>
+      <rect x="758" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="773" y="0" width="14" height="28" fill="#F59E0B"/>
+      <!-- M=5, N=50 -->
+      <rect x="792" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="807" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="822" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="837" y="0" width="14" height="28" fill="#F3F4F6"/>
+    </g>
+  </g>
+
+  <!-- Subtle row divider -->
+  <line x1="0" y1="120" x2="820" y2="120" stroke="#F3F4F6"/>
+
+  <!-- ═══════════════════════════════════════
+       ROW 2 — H3 iterative auction (10 wins, top mean)
+       ═══════════════════════════════════════ -->
+  <g transform="translate(0, 136)">
+    <text x="12" y="22" font-size="13.5" font-weight="700" fill="#111">H3 auction <tspan fill="#059669">★</tspan></text>
+    <text x="12" y="38" font-size="10.5" fill="#6B7280">detour-based bidding · top mean</text>
+
+    <text x="176" y="22" font-size="18" font-weight="700" fill="#111" font-family="'Roboto Mono',monospace">10</text>
+    <text x="208" y="22" font-size="11" font-weight="500" fill="#6B7280">/ 36</text>
+    <text x="176" y="38" font-size="10" fill="#6B7280">28% · dominates large N, tight</text>
+
+    <g>
+      <rect x="252" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="267" y="0" width="14" height="28" fill="#059669"/>
+      <rect x="282" y="0" width="14" height="28" fill="#059669"/>
+      <rect x="297" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="316" y="0" width="14" height="28" fill="#059669"/>
+      <rect x="331" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="346" y="0" width="14" height="28" fill="#059669"/>
+      <rect x="361" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="380" y="0" width="14" height="28" fill="#059669"/>
+      <rect x="395" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="410" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="425" y="0" width="14" height="28" fill="#059669"/>
+    </g>
+    <g>
+      <rect x="458" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="473" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="488" y="0" width="14" height="28" fill="#059669"/>
+      <rect x="503" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="522" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="537" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="552" y="0" width="14" height="28" fill="#059669"/>
+      <rect x="567" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="586" y="0" width="14" height="28" fill="#059669"/>
+      <rect x="601" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="616" y="0" width="14" height="28" fill="#059669"/>
+      <rect x="631" y="0" width="14" height="28" fill="#059669"/>
+    </g>
+    <g>
+      <rect x="664" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="679" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="694" y="0" width="14" height="28" fill="#059669"/>
+      <rect x="709" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="728" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="743" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="758" y="0" width="14" height="28" fill="#059669"/>
+      <rect x="773" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="792" y="0" width="14" height="28" fill="#059669"/>
+      <rect x="807" y="0" width="14" height="28" fill="#059669"/>
+      <rect x="822" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="837" y="0" width="14" height="28" fill="#059669"/>
+    </g>
+  </g>
+
+  <line x1="0" y1="200" x2="820" y2="200" stroke="#F3F4F6"/>
+
+  <!-- ═══════════════════════════════════════
+       ROW 3 — H1 cluster (4 wins)
+       ═══════════════════════════════════════ -->
+  <g transform="translate(0, 216)">
+    <text x="12" y="22" font-size="13.5" font-weight="700" fill="#111">H1 cluster + BA-NN</text>
+    <text x="12" y="38" font-size="10.5" fill="#6B7280">K-means partition · nearest-neighbour</text>
+
+    <text x="176" y="22" font-size="18" font-weight="700" fill="#111" font-family="'Roboto Mono',monospace">4</text>
+    <text x="192" y="22" font-size="11" font-weight="500" fill="#6B7280">/ 36</text>
+    <text x="176" y="38" font-size="10" fill="#6B7280">11% · bimodal layouts</text>
+
+    <g>
+      <rect x="252" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="267" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="282" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="297" y="0" width="14" height="28" fill="#6366F1"/>
+
+      <rect x="316" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="331" y="0" width="14" height="28" fill="#6366F1"/>
+      <rect x="346" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="361" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="380" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="395" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="410" y="0" width="14" height="28" fill="#6366F1"/>
+      <rect x="425" y="0" width="14" height="28" fill="#F3F4F6"/>
+    </g>
+    <g>
+      <rect x="458" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="473" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="488" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="503" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="522" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="537" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="552" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="567" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="586" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="601" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="616" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="631" y="0" width="14" height="28" fill="#F3F4F6"/>
+    </g>
+    <g>
+      <rect x="664" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="679" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="694" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="709" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="728" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="743" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="758" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="773" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="792" y="0" width="14" height="28" fill="#6366F1"/>
+      <rect x="807" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="822" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="837" y="0" width="14" height="28" fill="#F3F4F6"/>
+    </g>
+  </g>
+
+  <line x1="0" y1="280" x2="820" y2="280" stroke="#F3F4F6"/>
+
+  <!-- ═══════════════════════════════════════
+       ROW 4 — H2 sweep (4 wins)
+       ═══════════════════════════════════════ -->
+  <g transform="translate(0, 296)">
+    <text x="12" y="22" font-size="13.5" font-weight="700" fill="#111">H2 sweep + BA-NN</text>
+    <text x="12" y="38" font-size="10.5" fill="#6B7280">polar-angle sweep partition</text>
+
+    <text x="176" y="22" font-size="18" font-weight="700" fill="#111" font-family="'Roboto Mono',monospace">4</text>
+    <text x="192" y="22" font-size="11" font-weight="500" fill="#6B7280">/ 36</text>
+    <text x="176" y="38" font-size="10" fill="#6B7280">11% · niche, large N</text>
+
+    <g>
+      <rect x="252" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="267" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="282" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="297" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="316" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="331" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="346" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="361" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="380" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="395" y="0" width="14" height="28" fill="#06B6D4"/>
+      <rect x="410" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="425" y="0" width="14" height="28" fill="#F3F4F6"/>
+    </g>
+    <g>
+      <rect x="458" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="473" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="488" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="503" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="522" y="0" width="14" height="28" fill="#06B6D4"/>
+      <rect x="537" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="552" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="567" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="586" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="601" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="616" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="631" y="0" width="14" height="28" fill="#F3F4F6"/>
+    </g>
+    <g>
+      <rect x="664" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="679" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="694" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="709" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="728" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="743" y="0" width="14" height="28" fill="#06B6D4"/>
+      <rect x="758" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="773" y="0" width="14" height="28" fill="#F3F4F6"/>
+
+      <rect x="792" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="807" y="0" width="14" height="28" fill="#06B6D4"/>
+      <rect x="822" y="0" width="14" height="28" fill="#F3F4F6"/>
+      <rect x="837" y="0" width="14" height="28" fill="#F3F4F6"/>
+    </g>
+  </g>
+
+  <!-- Bottom axis tick row: 4-variant key -->
+  <g transform="translate(0, 344)" font-size="8.5" fill="#9CA3AF">
+    <text x="252" y="8" font-weight="500">↑ 4 variants per N: unif-med · unif-tight · clust-med · clust-tight</text>
+  </g>
+</svg>
+
+<div class="source">n = 50 evaluation episodes per scenario &middot; 14,400 episodes total &middot; matched layout seeds &middot; 36 scenarios = 3 fleet sizes × 3 customer counts × 2 spatial × 2 urgency</div>
+
+<div class="caption"><b>Figure 6.</b> H4 greedy EDF wins most cells (18/36, or 50%) but its wins concentrate at small customer counts where coordination barely matters. H3 iterative auction wins only 28% of cells (10/36) yet leads the <em>mean</em> return (Fig 1) because its wins land in the hardest cases — large \(N\), tight deadlines, clustered layouts — where the reward differential is largest. H1 and H2 occupy narrow niches.</div>
+
+</div>
+</body>
+</html>

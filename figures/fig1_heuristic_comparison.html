@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 1 — Mean team return</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#FAFAFA;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-height:100vh; padding:40px;
+  font-family:'Roboto','Helvetica Neue',Arial,sans-serif;
+  color:#222;
+}
+.wrap { background:#fff; padding:28px 32px 22px; max-width:820px; width:100%; border:1px solid #E5E7EB; }
+.title { font-size:17px; font-weight:700; color:#111; letter-spacing:-.005em; line-height:1.25; }
+.subtitle { font-size:13px; font-weight:400; color:#4B5563; margin-top:4px; line-height:1.45; }
+.hr { height:1px; background:#E5E7EB; margin:14px 0 10px; }
+.source { font-size:10.5px; color:#6B7280; margin-top:12px; padding-top:10px; border-top:1px solid #E5E7EB; }
+.caption { font-size:12.5px; color:#374151; margin-top:14px; line-height:1.6; padding-top:14px; border-top:1px solid #E5E7EB; }
+.caption b { color:#111; font-weight:700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="title">Figure 1. Mean team return, averaged across 36 scenarios</div>
+<div class="subtitle">H3 iterative auction leads overall; all four heuristics finish within a 100-point band.</div>
+<div class="hr"></div>
+
+<svg width="760" height="260" viewBox="0 0 820 280" xmlns="http://www.w3.org/2000/svg" font-family="'Roboto','Helvetica Neue',Arial,sans-serif">
+
+  <!-- Column headers -->
+  <g font-size="10" font-weight="500" fill="#6B7280" letter-spacing=".02em">
+    <text x="12" y="18">Rank</text>
+    <text x="60" y="18">Method</text>
+    <text x="280" y="18">Mean return</text>
+  </g>
+  <line x1="0" y1="26" x2="820" y2="26" stroke="#E5E7EB"/>
+
+  <!-- ════ Row 1: H3 auction ════ -->
+  <g transform="translate(0,50)">
+    <text x="12" y="6" font-size="13" font-weight="700" fill="#059669" font-family="'Roboto Mono',monospace">01</text>
+    <text x="60" y="6" font-size="13.5" font-weight="700" fill="#111">H3 iterative auction</text>
+    <text x="60" y="22" font-size="10.5" fill="#6B7280">detour-based bidding · top mean</text>
+    <!-- Bar value -->
+    <text x="280" y="6" font-size="18" font-weight="700" fill="#111" font-family="'Roboto Mono',monospace">1,044</text>
+    <text x="340" y="6" font-size="11" fill="#059669" font-weight="500">★ leader</text>
+    <!-- Horizontal rail + dot -->
+    <line x1="420" y1="2" x2="800" y2="2" stroke="#E5E7EB" stroke-width="1"/>
+    <line x1="420" y1="2" x2="763" y2="2" stroke="#059669" stroke-width="2.5"/>
+    <circle cx="763" cy="2" r="6" fill="#059669"/>
+  </g>
+
+  <!-- Row 2: H2 sweep -->
+  <g transform="translate(0,100)">
+    <text x="12" y="6" font-size="13" font-weight="700" fill="#6B7280" font-family="'Roboto Mono',monospace">02</text>
+    <text x="60" y="6" font-size="13.5" font-weight="700" fill="#111">H2 sweep + BA-NN</text>
+    <text x="60" y="22" font-size="10.5" fill="#6B7280">polar-angle partition · nearest-neighbour</text>
+    <text x="280" y="6" font-size="18" font-weight="700" fill="#111" font-family="'Roboto Mono',monospace">1,036</text>
+    <text x="340" y="6" font-size="11" fill="#6B7280">−8 vs H3</text>
+    <line x1="420" y1="2" x2="800" y2="2" stroke="#E5E7EB" stroke-width="1"/>
+    <line x1="420" y1="2" x2="755" y2="2" stroke="#06B6D4" stroke-width="2.2"/>
+    <circle cx="755" cy="2" r="5" fill="#06B6D4"/>
+  </g>
+
+  <!-- Row 3: H1 cluster -->
+  <g transform="translate(0,150)">
+    <text x="12" y="6" font-size="13" font-weight="700" fill="#6B7280" font-family="'Roboto Mono',monospace">03</text>
+    <text x="60" y="6" font-size="13.5" font-weight="700" fill="#111">H1 cluster + BA-NN</text>
+    <text x="60" y="22" font-size="10.5" fill="#6B7280">K-means partition · nearest-neighbour</text>
+    <text x="280" y="6" font-size="18" font-weight="700" fill="#111" font-family="'Roboto Mono',monospace">1,030</text>
+    <text x="340" y="6" font-size="11" fill="#6B7280">−14 vs H3</text>
+    <line x1="420" y1="2" x2="800" y2="2" stroke="#E5E7EB" stroke-width="1"/>
+    <line x1="420" y1="2" x2="751" y2="2" stroke="#6366F1" stroke-width="2.2"/>
+    <circle cx="751" cy="2" r="5" fill="#6366F1"/>
+  </g>
+
+  <!-- Row 4: H4 EDF -->
+  <g transform="translate(0,200)">
+    <text x="12" y="6" font-size="13" font-weight="700" fill="#6B7280" font-family="'Roboto Mono',monospace">04</text>
+    <text x="60" y="6" font-size="13.5" font-weight="700" fill="#111">H4 greedy EDF</text>
+    <text x="60" y="22" font-size="10.5" fill="#6B7280">earliest-deadline-first · most wins, lowest mean</text>
+    <text x="280" y="6" font-size="18" font-weight="700" fill="#111" font-family="'Roboto Mono',monospace">947</text>
+    <text x="325" y="6" font-size="11" fill="#F59E0B" font-weight="500">−97 vs H3</text>
+    <line x1="420" y1="2" x2="800" y2="2" stroke="#E5E7EB" stroke-width="1"/>
+    <line x1="420" y1="2" x2="692" y2="2" stroke="#F59E0B" stroke-width="2.2"/>
+    <circle cx="692" cy="2" r="5" fill="#F59E0B"/>
+  </g>
+
+  <!-- Scale ticks at bottom of dot area -->
+  <g transform="translate(0,245)">
+    <line x1="420" y1="0" x2="800" y2="0" stroke="#9CA3AF" stroke-width="0.8"/>
+    <g font-size="9.5" fill="#6B7280" font-family="'Roboto Mono',monospace">
+      <line x1="420" y1="0" x2="420" y2="4" stroke="#9CA3AF"/>
+      <text x="420" y="16" text-anchor="middle">900</text>
+      <line x1="515" y1="0" x2="515" y2="4" stroke="#9CA3AF"/>
+      <text x="515" y="16" text-anchor="middle">950</text>
+      <line x1="610" y1="0" x2="610" y2="4" stroke="#9CA3AF"/>
+      <text x="610" y="16" text-anchor="middle">1,000</text>
+      <line x1="705" y1="0" x2="705" y2="4" stroke="#9CA3AF"/>
+      <text x="705" y="16" text-anchor="middle">1,050</text>
+      <line x1="800" y1="0" x2="800" y2="4" stroke="#9CA3AF"/>
+      <text x="800" y="16" text-anchor="middle">1,100</text>
+    </g>
+  </g>
+</svg>
+
+<div class="source">n = 50 evaluation episodes per scenario &middot; 14,400 episodes total &middot; matched layout seeds across methods</div>
+
+<div class="caption"><b>Figure 1.</b> Mean team return averaged across 36 scenarios (M ∈ {2, 3, 5}, N ∈ {20, 30, 50}, three spatial distributions, two urgency levels). H3 iterative auction leads by 8–97 points. H4 greedy EDF finishes last on mean return despite winning the most individual scenarios (Fig 6) — its wins concentrate where the return differential is smallest.</div>
+
+</div>
+</body>
+</html>

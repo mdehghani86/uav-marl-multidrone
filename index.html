@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cooperative Multi-Drone Routing via Attention-Based MARL</title>
+<style>
+  :root {
+    --ink:        #0f172a;
+    --ink-2:      #1e293b;
+    --ink-3:      #475569;
+    --bg:         #ffffff;
+    --bg-2:       #f8fafc;
+    --bg-3:       #f1f5f9;
+    --line:       #e2e8f0;
+    --accent:     #2563eb;
+    --accent-2:   #1d4ed8;
+    --good:       #059669;
+    --warn:       #d97706;
+    --mono:       ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
+    --sans:       -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── Top bar ─── */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 24px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: saturate(180%) blur(8px);
+    -webkit-backdrop-filter: saturate(180%) blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand {
+    font-weight: 700; font-size: 14px; letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .brand-dot {
+    display: inline-block; width: 9px; height: 9px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
+    margin-right: 8px; vertical-align: middle;
+  }
+  .topbar-spacer { flex: 1; }
+  .topbar a.btn-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--ink-3);
+    text-decoration: none; padding: 6px 10px;
+    border-radius: 6px;
+  }
+  .topbar a.btn-link:hover { color: var(--ink); background: var(--bg-3); }
+  .icon { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* ─── Hero ─── */
+  .hero {
+    max-width: 1100px; margin: 0 auto;
+    padding: 56px 24px 40px;
+  }
+  .badge {
+    display: inline-block;
+    font-family: var(--mono); font-size: 12px;
+    color: var(--accent-2); background: #dbeafe;
+    padding: 4px 10px; border-radius: 12px;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-size: 42px; font-weight: 700; line-height: 1.15;
+    letter-spacing: -0.025em;
+    margin: 0 0 18px;
+    color: var(--ink);
+  }
+  .subtitle {
+    font-size: 18px; color: var(--ink-3);
+    max-width: 740px; margin: 0 0 28px;
+  }
+  .author-row {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--ink-3); font-size: 14px;
+    margin-bottom: 32px;
+  }
+  .author-row .pipe { opacity: 0.4; }
+
+  /* ─── Hero stats ─── */
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 14px; margin-bottom: 28px;
+  }
+  .stat-card {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 16px;
+  }
+  .stat-card .v {
+    font-family: var(--mono); font-size: 22px; font-weight: 600;
+    color: var(--accent-2);
+    line-height: 1.1;
+  }
+  .stat-card .v.good { color: var(--good); }
+  .stat-card .l {
+    font-size: 12px; color: var(--ink-3);
+    margin-top: 6px; line-height: 1.3;
+  }
+  @media (max-width: 720px) {
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    h1 { font-size: 30px; }
+  }
+
+  /* ─── CTA buttons ─── */
+  .cta {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 16px;
+    font-size: 14px; font-weight: 500;
+    border-radius: 8px; border: 1px solid var(--line);
+    text-decoration: none; cursor: pointer;
+    background: white; color: var(--ink);
+    transition: all 0.12s;
+  }
+  .btn:hover { border-color: var(--ink); transform: translateY(-1px); }
+  .btn.primary {
+    background: var(--accent); color: white; border-color: var(--accent);
+  }
+  .btn.primary:hover { background: var(--accent-2); border-color: var(--accent-2); }
+
+  /* ─── Sections ─── */
+  section.block {
+    max-width: 1100px; margin: 0 auto;
+    padding: 32px 24px;
+    border-top: 1px solid var(--line);
+  }
+  h2 {
+    font-size: 24px; font-weight: 700; letter-spacing: -0.02em;
+    margin: 0 0 8px; color: var(--ink);
+  }
+  .section-lede {
+    color: var(--ink-3); font-size: 15px; max-width: 760px;
+    margin: 0 0 24px;
+  }
+
+  /* ─── Findings list ─── */
+  .findings { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .finding {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 18px;
+  }
+  .finding h3 {
+    font-size: 14px; font-weight: 600; color: var(--accent-2);
+    margin: 0 0 6px; letter-spacing: 0;
+  }
+  .finding p { margin: 0; color: var(--ink-2); font-size: 14px; line-height: 1.5; }
+  @media (max-width: 720px) { .findings { grid-template-columns: 1fr; } }
+
+  /* ─── Figure cards ─── */
+  .fig-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 18px;
+  }
+  .fig-card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: white;
+    overflow: hidden;
+    transition: box-shadow 0.15s, transform 0.15s;
+  }
+  .fig-card:hover {
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.07);
+    transform: translateY(-2px);
+  }
+  .fig-card iframe {
+    width: 100%; height: 360px;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    display: block;
+  }
+  .fig-card-meta {
+    padding: 14px 16px;
+  }
+  .fig-card-meta .num {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--ink-3); letter-spacing: 0.05em;
+  }
+  .fig-card-meta .title {
+    font-size: 14px; font-weight: 600; margin: 4px 0 6px;
+    color: var(--ink);
+  }
+  .fig-card-meta .cap {
+    font-size: 13px; color: var(--ink-3); line-height: 1.4;
+  }
+  .fig-card-meta .open {
+    display: inline-block; margin-top: 8px;
+    font-size: 12px; color: var(--accent-2);
+    text-decoration: none;
+  }
+  .fig-card-meta .open:hover { text-decoration: underline; }
+
+  /* ─── Comparison table ─── */
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px;
+    background: white;
+  }
+  th, td {
+    padding: 9px 12px; text-align: right;
+    border-bottom: 1px solid var(--line);
+  }
+  th { background: var(--bg-2); color: var(--ink-3); font-weight: 600; }
+  th:first-child, td:first-child { text-align: left; }
+  td.method { font-weight: 500; }
+  tr.win td { background: #ecfdf5; }
+  tr.win td.method { color: var(--good); font-weight: 600; }
+
+  /* ─── Citation block ─── */
+  .citation {
+    background: var(--ink); color: #e2e8f0;
+    border-radius: 10px;
+    padding: 18px 20px;
+    font-family: var(--mono); font-size: 12px;
+    line-height: 1.55;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* ─── Footer ─── */
+  footer {
+    max-width: 1100px; margin: 0 auto;
+    padding: 40px 24px 60px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-3); font-size: 13px;
+  }
+  footer a { color: var(--accent-2); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="#" class="brand"><span class="brand-dot"></span>UAV-MARL</a>
+  <div class="topbar-spacer"></div>
+  <a class="btn-link" href="#findings">Findings</a>
+  <a class="btn-link" href="#figures">Figures</a>
+  <a class="btn-link" href="#table">Comparison</a>
+  <a class="btn-link" href="paper.pdf" target="_blank" rel="noopener" title="View PDF">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="9" y1="13" x2="15" y2="13"/>
+      <line x1="9" y1="17" x2="15" y2="17"/>
+    </svg>
+    PDF
+  </a>
+  <a class="btn-link" href="https://github.com/mdehghani86/uav-marl-multidrone" target="_blank" rel="noopener" title="GitHub repo">
+    <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.1c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.4 3.6 1 .1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.3-3.2-.1-.3-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.9.1 3.2.8.8 1.3 2 1.3 3.2 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/>
+    </svg>
+    GitHub
+  </a>
+</div>
+
+<div class="hero">
+  <span class="badge">ESWA 2026 · Preprint</span>
+  <h1>Cooperative Multi-Drone Routing under Deadlines and Battery Constraints via Attention-Based Multi-Agent Reinforcement Learning</h1>
+  <p class="subtitle">
+    A trained attention-based multi-agent policy beats the strongest classical heuristic by <strong>+4.38%</strong> on a 17-cell saturation grid (4250 evaluation episodes per method) while recording <strong>zero battery-depletion crashes</strong>, and is 2.0&times; more selective for premium-tier customers than the heuristic.
+  </p>
+  <div class="author-row">
+    <span>Mohammad Dehghani</span>
+    <span class="pipe">·</span>
+    <span>Northeastern University</span>
+    <span class="pipe">·</span>
+    <span>m.dehghani@northeastern.edu</span>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="v good">+4.38%</div>
+      <div class="l">Reward lift over best heuristic (H3 auction)</div>
+    </div>
+    <div class="stat-card">
+      <div class="v good">0.00</div>
+      <div class="l">Crashes per episode across 4250 evals</div>
+    </div>
+    <div class="stat-card">
+      <div class="v">1.97&times;</div>
+      <div class="l">Premium / economy customer discrimination</div>
+    </div>
+    <div class="stat-card">
+      <div class="v">5 seeds</div>
+      <div class="l">17 cells &times; 50 episodes each</div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <a href="paper.pdf" target="_blank" rel="noopener" class="btn primary">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+      </svg>
+      Read PDF
+    </a>
+    <a href="https://github.com/mdehghani86/uav-marl-multidrone" target="_blank" rel="noopener" class="btn">
+      <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.1c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.4 3.6 1 .1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.3-3.2-.1-.3-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.9.1 3.2.8.8 1.3 2 1.3 3.2 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/>
+      </svg>
+      Source code
+    </a>
+    <a href="data/saturation_summary_v3_1.csv" target="_blank" rel="noopener" class="btn">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Raw data (CSV)
+    </a>
+  </div>
+</div>
+
+<!-- ─── Findings ─── -->
+<section class="block" id="findings">
+  <h2>Key Findings</h2>
+  <p class="section-lede">Five incremental design improvements move an attention-based MARL agent from a $-25\%$ deficit to a $+4.38\%$ lead over the strongest heuristic on the same scenario grid.</p>
+
+  <div class="findings">
+    <div class="finding">
+      <h3>Battery-feasibility action mask</h3>
+      <p>A two-step mask that requires "can return from this customer" eliminates the 1.78 crashes per episode the random policy commits and is the prerequisite for any RL policy to be deployable.</p>
+    </div>
+    <div class="finding">
+      <h3>Per-customer cost-and-slack features</h3>
+      <p>Exposing the seven quantities the action mask already evaluates internally — distance, energy fraction, time fraction, deadline slack, return margin, net payoff, nearest-other-drone distance — closes the gap to heuristics in a single step (+25 percentage points of reward).</p>
+    </div>
+    <div class="finding">
+      <h3>BC warm start + dual-pool critic</h3>
+      <p>Behaviour-cloning from auction-heuristic trajectories, plus a critic that pools both the full and the feasible-only node sets, plus reward-and-deadline-weighted potential-based reward shaping, lift the agent another +2.5 percentage points.</p>
+    </div>
+    <div class="finding">
+      <h3>Inter-drone coordination feature</h3>
+      <p>One additional per-customer channel — the distance to the nearest other drone — gives the agent the same contention signal an auction heuristic computes online. Pushes the lift to a final +4.38% over the best heuristic at 0 crashes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Figures ─── -->
+<section class="block" id="figures">
+  <h2>Figures</h2>
+  <p class="section-lede">All charts are interactive — click any card to open the figure in its own page.</p>
+
+  <div class="fig-grid">
+
+    <div class="fig-card">
+      <iframe src="figures/fig1_heuristic_comparison.html" loading="lazy" title="Heuristic comparison"></iframe>
+      <div class="fig-card-meta">
+        <div class="num">FIGURE 1</div>
+        <div class="title">Heuristic baseline comparison</div>
+        <div class="cap">Per-cell reward of H1 cluster, H2 sweep, H3 auction, and H4 EDF across the 17 saturation cells. H3 is the strongest heuristic and the bar to beat.</div>
+        <a class="open" href="figures/fig1_heuristic_comparison.html" target="_blank" rel="noopener">Open in new tab &rarr;</a>
+      </div>
+    </div>
+
+    <div class="fig-card">
+      <iframe src="figures/fig2_column_chart.html" loading="lazy" title="Column chart"></iframe>
+      <div class="fig-card-meta">
+        <div class="num">FIGURE 2</div>
+        <div class="title">Headline KPIs across all methods</div>
+        <div class="cap">Total reward, customers served, crash count, and reward-per-served, broken down across the four heuristics and the five Attn-MARL versions. The v3.4-bc bar is the highest-reward, lowest-crash configuration.</div>
+        <a class="open" href="figures/fig2_column_chart.html" target="_blank" rel="noopener">Open in new tab &rarr;</a>
+      </div>
+    </div>
+
+    <div class="fig-card">
+      <iframe src="figures/fig3_training_curves.html" loading="lazy" title="Training curves"></iframe>
+      <div class="fig-card-meta">
+        <div class="num">FIGURE 3</div>
+        <div class="title">Training curves by configuration</div>
+        <div class="cap">Mean training reward against rollout count for v3.0 through v3.4-bc on the medium cell. Each design improvement lifts the convergence plateau; the BC warm start is visible as the vertical jump near step zero.</div>
+        <a class="open" href="figures/fig3_training_curves.html" target="_blank" rel="noopener">Open in new tab &rarr;</a>
+      </div>
+    </div>
+
+    <div class="fig-card">
+      <iframe src="figures/fig4_architecture.html" loading="lazy" title="Architecture diagram"></iframe>
+      <div class="fig-card-meta">
+        <div class="num">FIGURE 4</div>
+        <div class="title">Attention-based multi-agent policy architecture</div>
+        <div class="cap">Shared 17-dim node tokenisation, two-layer Transformer encoder (no key-padding mask), per-drone query token, dual-pool team critic, and feasibility-masked action logits.</div>
+        <a class="open" href="figures/fig4_architecture.html" target="_blank" rel="noopener">Open in new tab &rarr;</a>
+      </div>
+    </div>
+
+    <div class="fig-card">
+      <iframe src="figures/fig5_env_diagram.html" loading="lazy" title="Environment diagram"></iframe>
+      <div class="fig-card-meta">
+        <div class="num">FIGURE 5</div>
+        <div class="title">Environment diagram</div>
+        <div class="cap">Anchored-depot charger placement, tiered-reward customer distribution, and the sequential-turn action protocol with an event-driven turn ordering.</div>
+        <a class="open" href="figures/fig5_env_diagram.html" target="_blank" rel="noopener">Open in new tab &rarr;</a>
+      </div>
+    </div>
+
+    <div class="fig-card">
+      <iframe src="figures/fig6_scenario_heatmap.html" loading="lazy" title="Scenario heatmap"></iframe>
+      <div class="fig-card-meta">
+        <div class="num">FIGURE 6</div>
+        <div class="title">Scenario heatmap</div>
+        <div class="cap">Per-cell reward heatmap across the 17 saturation cells (12 cells of Exp&nbsp;3 + 5 of Exp&nbsp;4) for the strongest heuristic vs. the trained Attn-MARL agent. The Attn-MARL agent wins in 14 of 17 cells.</div>
+        <a class="open" href="figures/fig6_scenario_heatmap.html" target="_blank" rel="noopener">Open in new tab &rarr;</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── Comparison table ─── -->
+<section class="block" id="table">
+  <h2>Method comparison</h2>
+  <p class="section-lede">All numbers from 5 seeds &times; 17 cells &times; 50 episodes = 4250 evaluation episodes per method. h/l ratio = served-high-tier ÷ served-low-tier.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Reward</th>
+          <th>Served</th>
+          <th>Crashes</th>
+          <th>h/l ratio</th>
+          <th>Reward / served</th>
+          <th>Gap to H3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="method">H1 cluster + BA-NN</td>
+          <td>1899 ± 818</td>
+          <td>58.4</td>
+          <td>0.00</td>
+          <td>1.50&times;</td>
+          <td>33.13</td>
+          <td>−5.4%</td>
+        </tr>
+        <tr>
+          <td class="method">H2 sweep + BA-NN</td>
+          <td>1639 ± 789</td>
+          <td>52.8</td>
+          <td>0.00</td>
+          <td>1.40&times;</td>
+          <td>32.37</td>
+          <td>−18.3%</td>
+        </tr>
+        <tr>
+          <td class="method"><strong>H3 auction + BA-NN</strong></td>
+          <td><strong>2007 ± 814</strong></td>
+          <td>64.1</td>
+          <td>0.00</td>
+          <td>1.49&times;</td>
+          <td>32.90</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="method">H4 EDF</td>
+          <td>415 ± 129</td>
+          <td>11.6</td>
+          <td>0.00</td>
+          <td>2.59&times;</td>
+          <td>36.04</td>
+          <td>−79.3%</td>
+        </tr>
+        <tr>
+          <td class="method">I-PPO (flat MLP)</td>
+          <td>799 ± 413</td>
+          <td>29.6</td>
+          <td>0.00</td>
+          <td>1.04&times;</td>
+          <td>30.25</td>
+          <td>−60.2%</td>
+        </tr>
+        <tr>
+          <td class="method">MAPPO (flat MLP)</td>
+          <td>818 ± 426</td>
+          <td>30.3</td>
+          <td>0.00</td>
+          <td>1.05&times;</td>
+          <td>30.28</td>
+          <td>−59.2%</td>
+        </tr>
+        <tr>
+          <td class="method">Attn-MARL v3.1 (mask)</td>
+          <td>1510 ± 614</td>
+          <td>45.8</td>
+          <td>0.00</td>
+          <td>3.99&times;</td>
+          <td>38.59</td>
+          <td>−24.8%</td>
+        </tr>
+        <tr>
+          <td class="method">Attn-MARL v3.2 (+slack)</td>
+          <td>2024 ± 677</td>
+          <td>61.5</td>
+          <td>0.00</td>
+          <td>2.21&times;</td>
+          <td>35.04</td>
+          <td>+0.85%</td>
+        </tr>
+        <tr>
+          <td class="method">Attn-MARL v3.3-bc (+BC, dual-pool, shaping)</td>
+          <td>2074 ± 689</td>
+          <td>62.9</td>
+          <td>0.00</td>
+          <td>2.13&times;</td>
+          <td>34.81</td>
+          <td>+3.34%</td>
+        </tr>
+        <tr class="win">
+          <td class="method"><strong>Attn-MARL v3.4-bc (+coordination)</strong></td>
+          <td><strong>2095 ± 684</strong></td>
+          <td><strong>64.3</strong></td>
+          <td><strong>0.00</strong></td>
+          <td>1.97&times;</td>
+          <td>34.41</td>
+          <td><strong>+4.38%</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─── Citation ─── -->
+<section class="block" id="cite">
+  <h2>Cite this work</h2>
+  <p class="section-lede">BibTeX entry for the working preprint.</p>
+  <div class="citation">@article{dehghani2026uavmarl,
+  title   = {Cooperative Multi-Drone Routing under Deadlines and Battery
+             Constraints via Attention-Based Multi-Agent Reinforcement Learning},
+  author  = {Dehghani, Mohammad},
+  journal = {Expert Systems with Applications (under review)},
+  year    = {2026},
+  url     = {https://mdehghani86.github.io/uav-marl-multidrone/}
+}</div>
+</section>
+
+<footer>
+  <p>
+    Mohammad Dehghani · <a href="https://github.com/mdehghani86/uav-marl-multidrone" target="_blank" rel="noopener">github.com/mdehghani86/uav-marl-multidrone</a>
+    · <a href="paper.pdf" target="_blank" rel="noopener">PDF</a>
+    · <a href="data/saturation_summary_v3_1.csv" target="_blank" rel="noopener">Raw data</a>
+  </p>
+  <p style="opacity: 0.7; margin-top: 12px;">Last updated 2026-05-03. Manuscript under review at Expert Systems with Applications.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fig 2 — How each heuristic scales with N</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#FAFAFA; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; padding:40px; font-family:'Roboto','Helvetica Neue',Arial,sans-serif; color:#222; }
+.wrap { background:#fff; padding:28px 32px 22px; max-width:820px; width:100%; border:1px solid #E5E7EB; }
+.title { font-size:17px; font-weight:700; color:#111; letter-spacing:-.005em; line-height:1.25; }
+.subtitle { font-size:13px; font-weight:400; color:#4B5563; margin-top:4px; line-height:1.45; }
+.hr { height:1px; background:#E5E7EB; margin:14px 0 10px; }
+.source { font-size:10.5px; color:#6B7280; margin-top:12px; padding-top:10px; border-top:1px solid #E5E7EB; }
+.caption { font-size:12.5px; color:#374151; margin-top:14px; line-height:1.6; padding-top:14px; border-top:1px solid #E5E7EB; }
+.caption b { color:#111; font-weight:700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="title">Figure 2. How each heuristic scales with customer count</div>
+<div class="subtitle">H1, H2, and H3 track closely across all three N. H4 collapses at N = 50, finishing 278 points below H3.</div>
+<div class="hr"></div>
+
+<svg width="760" height="320" viewBox="0 0 820 340" xmlns="http://www.w3.org/2000/svg" font-family="'Roboto','Helvetica Neue',Arial,sans-serif">
+
+  <!-- Y-axis label -->
+  <text x="0" y="170" transform="rotate(-90 0 170)" font-size="10.5" font-weight="500" fill="#6B7280" letter-spacing=".04em">MEAN TEAM RETURN</text>
+
+  <!-- Y gridlines + labels -->
+  <g font-size="10" fill="#6B7280" font-family="'Roboto Mono',monospace">
+    <text x="64" y="44" text-anchor="end">1,600</text><line x1="72" y1="40" x2="720" y2="40" stroke="#F3F4F6"/>
+    <text x="64" y="92" text-anchor="end">1,300</text><line x1="72" y1="88" x2="720" y2="88" stroke="#F3F4F6"/>
+    <text x="64" y="140" text-anchor="end">1,000</text><line x1="72" y1="136" x2="720" y2="136" stroke="#F3F4F6"/>
+    <text x="64" y="188" text-anchor="end">700</text><line x1="72" y1="184" x2="720" y2="184" stroke="#F3F4F6"/>
+    <text x="64" y="236" text-anchor="end">400</text><line x1="72" y1="232" x2="720" y2="232" stroke="#9CA3AF"/>
+  </g>
+
+  <!-- X-axis tick pills -->
+  <g font-size="11" font-weight="500" fill="#111" font-family="'Roboto Mono',monospace">
+    <text x="150" y="256" text-anchor="middle">N = 20</text>
+    <text x="396" y="256" text-anchor="middle">N = 30</text>
+    <text x="642" y="256" text-anchor="middle">N = 50</text>
+  </g>
+
+  <!-- Vertical rails -->
+  <line x1="150" y1="40" x2="150" y2="232" stroke="#E5E7EB" stroke-width="1"/>
+  <line x1="396" y1="40" x2="396" y2="232" stroke="#E5E7EB" stroke-width="1"/>
+  <line x1="642" y1="40" x2="642" y2="232" stroke="#E5E7EB" stroke-width="1"/>
+
+  <!-- Y→position mapping: 400→232, 1600→40, 0.16/unit
+       628:196.5 636:195.2 643:194.1 655:192.2
+       930:152.2 937:151.1 944:150.0 920:153.8
+       1531:56.6 1534:56.2 1544:54.6 1266:98.9
+       Mid x: N=20→150, N=30→396, N=50→642 -->
+
+  <!-- Lines (grey for baselines, amber for H4 collapse, emerald for H3 winner) -->
+  <!-- H1 -->
+  <polyline points="150,196.5 396,152.2 642,56.6" fill="none" stroke="#9CA3AF" stroke-width="1.6"/>
+  <!-- H2 -->
+  <polyline points="150,195.2 396,151.1 642,56.2" fill="none" stroke="#9CA3AF" stroke-width="1.6"/>
+  <!-- H4 (orange) -->
+  <polyline points="150,192.2 396,153.8 642,98.9" fill="none" stroke="#F59E0B" stroke-width="2.4"/>
+  <!-- H3 (emerald, heavy) -->
+  <polyline points="150,194.1 396,150.0 642,54.6" fill="none" stroke="#059669" stroke-width="2.8"/>
+
+  <!-- N=20 markers -->
+  <g>
+    <circle cx="150" cy="196.5" r="3.5" fill="#9CA3AF"/>
+    <circle cx="150" cy="195.2" r="3.5" fill="#9CA3AF"/>
+    <circle cx="150" cy="194.1" r="4.5" fill="#059669"/>
+    <circle cx="150" cy="192.2" r="3.5" fill="#F59E0B"/>
+  </g>
+  <!-- N=30 markers -->
+  <g>
+    <circle cx="396" cy="152.2" r="3.5" fill="#9CA3AF"/>
+    <circle cx="396" cy="151.1" r="3.5" fill="#9CA3AF"/>
+    <circle cx="396" cy="150.0" r="4.5" fill="#059669"/>
+    <circle cx="396" cy="153.8" r="3.5" fill="#F59E0B"/>
+  </g>
+  <!-- N=50 markers -->
+  <g>
+    <circle cx="642" cy="56.6" r="3.5" fill="#9CA3AF"/>
+    <circle cx="642" cy="56.2" r="3.5" fill="#9CA3AF"/>
+    <circle cx="642" cy="54.6" r="5.5" fill="#059669"/>
+    <circle cx="642" cy="98.9" r="4.5" fill="#F59E0B"/>
+  </g>
+
+  <!-- End-of-line labels -->
+  <g font-size="11" font-weight="500">
+    <!-- H3 winner -->
+    <text x="652" y="46" fill="#059669" font-weight="700">H3 auction</text>
+    <text x="652" y="60" fill="#6B7280" font-family="'Roboto Mono',monospace" font-size="10">1,544 · ★</text>
+    <!-- H2 -->
+    <text x="652" y="75" fill="#4B5563">H2 sweep</text>
+    <text x="652" y="89" fill="#9CA3AF" font-family="'Roboto Mono',monospace" font-size="10">1,534</text>
+    <!-- H1 -->
+    <text x="652" y="104" fill="#4B5563">H1 cluster</text>
+    <text x="652" y="118" fill="#9CA3AF" font-family="'Roboto Mono',monospace" font-size="10">1,531</text>
+    <!-- H4 -->
+    <text x="652" y="92" fill="#F59E0B" font-weight="700" opacity="0"/>
+    <text x="652" y="105" fill="#F59E0B" font-weight="700" transform="translate(0,0)">H4 EDF</text>
+    <text x="652" y="117" fill="#D97706" font-family="'Roboto Mono',monospace" font-size="10">1,266 &nbsp;(−278)</text>
+  </g>
+
+  <!-- H4 collapse annotation arrow -->
+  <g opacity=".7">
+    <line x1="530" y1="85" x2="630" y2="96" stroke="#F59E0B" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="470" y="82" font-size="10" fill="#D97706" font-weight="500">H4 collapses at N=50</text>
+  </g>
+
+  <!-- X-axis label -->
+  <text x="400" y="296" text-anchor="middle" font-size="11" fill="#6B7280" letter-spacing=".03em">Customer count N, averaged over M ∈ {2,3,5}, spatial, urgency</text>
+</svg>
+
+<div class="source">n = 50 evaluation episodes per scenario &middot; H4 serves only 92.6% of customers on average at N = 50 (vs 100% for H1/H2/H3)</div>
+
+<div class="caption"><b>Figure 2.</b> H1, H2, and H3 scale linearly because all three reach 100% service. H4 greedy EDF matches them at smaller \(N\) but falls 18% below H3 at \(N = 50\) as its myopic deadline rule fails to coordinate the fleet on the last customers when load saturates.</div>
+
+</div>
+</body>
+</html>

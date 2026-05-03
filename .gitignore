@@ -1,0 +1,26 @@
+# OS noise
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Python (in case anything ends up here)
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Build artefacts
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+
+# Local data caches
+node_modules/
